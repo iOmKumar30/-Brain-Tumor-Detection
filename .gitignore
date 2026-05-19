@@ -1,2 +1,41 @@
 *.h5
 *.keras
+
+# Runtime artifacts
+artifacts/
+checkpoints/*
+!checkpoints/.gitkeep
+runs/
+wandb/
+outputs/
+logs/
+
+# Local data should not be committed. Use docs/DATASET.md for layout.
+data/raw/*
+data/processed/*
+data/external/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/external/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Frontend
+webapp/node_modules/
+webapp/.next/
+webapp/dist/
+webapp/.env.local
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.env

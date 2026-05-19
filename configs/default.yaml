@@ -1,0 +1,50 @@
+project:
+  name: brats-segmentation
+  seed: 42
+  output_dir: artifacts/default
+
+data:
+  root: data/processed
+  format: npy
+  image_dir_name: images
+  mask_dir_name: masks
+  modalities: [flair, t1, t1ce, t2]
+  num_classes: 4
+  input_shape: [128, 128, 128]
+  train_split: train
+  val_split: val
+  test_split: test
+  cache_rate: 0.0
+  num_workers: 4
+
+model:
+  name: unet3d
+  in_channels: 4
+  out_channels: 4
+  base_channels: 24
+  dropout: 0.1
+
+training:
+  device: auto
+  epochs: 100
+  batch_size: 1
+  learning_rate: 0.0001
+  weight_decay: 0.00001
+  gradient_accumulation_steps: 4
+  mixed_precision: true
+  deterministic: true
+  early_stopping_patience: 20
+  checkpoint_metric: val_dice
+  checkpoint_mode: max
+  log_every_n_steps: 10
+
+evaluation:
+  include_background: false
+  hausdorff_percentile: 95
+  threshold: 0.5
+
+tracking:
+  tensorboard: true
+  wandb: false
+  experiment_name: unet3d-baseline
+

@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "brats-ai"
+version = "0.1.0"
+description = "Production-grade BraTS brain tumor segmentation pipeline with UNet and MONAI transformer support."
+readme = "README.md"
+requires-python = ">=3.10,<3.12"
+license = { text = "MIT" }
+authors = [{ name = "iOmKumar30" }]
+dependencies = [
+  "numpy>=1.24,<2.0",
+  "scipy>=1.10",
+  "scikit-learn>=1.3",
+  "nibabel>=5.1",
+  "pydantic>=2.6",
+  "pyyaml>=6.0",
+  "tqdm>=4.66",
+  "matplotlib>=3.7",
+  "tensorboard>=2.14",
+  "torch>=2.2",
+  "monai>=1.3",
+]
+
+[project.optional-dependencies]
+api = ["fastapi>=0.110", "uvicorn[standard]>=0.27", "python-multipart>=0.0.9", "pillow>=10.0"]
+dev = ["pytest>=8.0", "ruff>=0.4", "mypy>=1.8", "nbclient>=0.10", "ipykernel>=6.29"]
+tracking = ["wandb>=0.16"]
+
+[project.scripts]
+brats-audit = "brats_ai.cli.audit:main"
+brats-train = "brats_ai.cli.train:main"
+brats-evaluate = "brats_ai.cli.evaluate:main"
+brats-infer = "brats_ai.cli.infer:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ANN"]
+ignore = ["ANN101", "ANN102"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
