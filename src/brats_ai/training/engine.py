@@ -35,7 +35,11 @@ def run_dry_run(config: ExperimentConfig) -> dict[str, object]:
     dataset_status: dict[str, int | str] = {}
     for split in (config.data.train_split, config.data.val_split, config.data.test_split):
         try:
-            dataset_status[split] = len(discover_cases(config.data, split))
+            records = discover_cases(config.data, split)
+            missing_masks = sum(record.mask_path is None for record in records)
+            dataset_status[split] = (
+                len(records) if missing_masks == 0 else f"{len(records)} cases, {missing_masks} missing masks"
+            )
         except Exception as exc:  # noqa: BLE001 - report non-fatal audit status
             dataset_status[split] = str(exc)
     del model
@@ -143,4 +147,3 @@ def validate(model, dataloader, device, config: ExperimentConfig):
         recall=sum(m.recall for m in metrics) / len(metrics),
         specificity=sum(m.specificity for m in metrics) / len(metrics),
     )
-

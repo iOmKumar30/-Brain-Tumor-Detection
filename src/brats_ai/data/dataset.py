@@ -38,12 +38,36 @@ def discover_cases(data: DataConfig, split: str) -> list[CaseRecord]:
 
     records: list[CaseRecord] = []
     for image_path in image_files:
-        mask_path = mask_dir / image_path.name
-        if not mask_path.exists():
-            stem_mask = mask_dir / f"{image_path.stem}.npy"
-            mask_path = stem_mask if stem_mask.exists() else None
+        mask_path = _find_mask_path(mask_dir, image_path)
         records.append(CaseRecord(case_id=image_path.stem, image_path=image_path, mask_path=mask_path))
     return records
+
+
+def _find_mask_path(mask_dir: Path, image_path: Path) -> Path | None:
+    """Find a mask for common BraTS naming schemes."""
+
+    if not mask_dir.exists():
+        return None
+
+    suffix = "".join(image_path.suffixes) if "".join(image_path.suffixes).endswith(".nii.gz") else image_path.suffix
+    candidates = [
+        mask_dir / image_path.name,
+        mask_dir / f"{image_path.stem}.npy",
+        mask_dir / f"{image_path.stem}.npz",
+    ]
+    if image_path.stem.startswith("image_"):
+        mask_stem = "mask_" + image_path.stem.removeprefix("image_")
+        candidates.extend(
+            [
+                mask_dir / f"{mask_stem}{suffix}",
+                mask_dir / f"{mask_stem}.npy",
+                mask_dir / f"{mask_stem}.npz",
+            ]
+        )
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return None
 
 
 class BraTSDataset:
