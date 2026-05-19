@@ -7,7 +7,7 @@ name = "brats-ai"
 version = "0.1.0"
 description = "Production-grade BraTS brain tumor segmentation pipeline with UNet and MONAI transformer support."
 readme = "README.md"
-requires-python = ">=3.10,<3.12"
+requires-python = ">=3.10,<3.13"
 license = { text = "MIT" }
 authors = [{ name = "iOmKumar30" }]
 dependencies = [
@@ -49,4 +49,3 @@ ignore = ["ANN101", "ANN102"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
-

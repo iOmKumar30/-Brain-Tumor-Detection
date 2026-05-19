@@ -37,7 +37,7 @@ Production-ready BraTS-style brain tumor segmentation scaffold with reproducible
 
 ## Quick Start
 
-Create an environment with Python 3.10 or 3.11. PyTorch/MONAI medical imaging stacks are not yet broadly reliable on Python 3.13, so use a supported ML runtime.
+Create an environment with Python 3.10, 3.11, or 3.12. Kaggle currently commonly uses Python 3.12, which is supported by this project. PyTorch/MONAI medical imaging stacks are not yet broadly reliable on Python 3.13, so avoid Python 3.13 for training.
 
 ```bash
 python -m venv .venv
@@ -107,4 +107,3 @@ This refactor was validated in the current Codex environment with syntax checks.
 - Git LFS checkpoint download via `git lfs pull`
 
 See [docs/AUDIT.md](docs/AUDIT.md) for the discovered issues and remediation map.
-
